@@ -15,7 +15,7 @@ import {
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
+import { Component, compose, Fragment } from '@wordpress/element';
 import { getBlobByURL, revokeBlobURL, viewPort } from '@wordpress/utils';
 import {
 	Button,
@@ -26,12 +26,14 @@ import {
 	TextControl,
 	TextareaControl,
 	Toolbar,
+	withNotices,
 } from '@wordpress/components';
 import { withSelect } from '@wordpress/data';
 import { editorMediaUpload } from '@wordpress/blocks';
 import {
 	RichText,
 	BlockControls,
+	BlockNotices,
 	InspectorControls,
 	ImagePlaceholder,
 	MediaUpload,
@@ -77,13 +79,13 @@ class ImageEdit extends Component {
 			getBlobByURL( url )
 				.then(
 					( file ) =>
-						editorMediaUpload(
-							[ file ],
-							( [ image ] ) => {
+						editorMediaUpload( {
+							filesList: [ file ],
+							onFileChange: ( [ image ] ) => {
 								setAttributes( { ...image } );
 							},
-							'image'
-						)
+							allowedType: 'image',
+						} )
 				);
 		}
 	}
@@ -106,6 +108,15 @@ class ImageEdit extends Component {
 	}
 
 	onSelectImage( media ) {
+		if ( ! media ) {
+			this.props.setAttributes( {
+				url: undefined,
+				alt: undefined,
+				id: undefined,
+				caption: undefined,
+			} );
+			return;
+		}
 		this.props.setAttributes( {
 			...pick( media, [ 'alt', 'id', 'caption', 'url' ] ),
 			width: undefined,
@@ -167,8 +178,15 @@ class ImageEdit extends Component {
 	}
 
 	render() {
-		const { attributes, setAttributes, isSelected, className, maxWidth, toggleSelection } = this.props;
+		const { attributes, setAttributes, isSelected, className, maxWidth, notices, toggleSelection } = this.props;
 		const { url, alt, caption, align, id, href, width, height } = attributes;
+
+		const noticesUI = notices.noticeList.length > 0 &&
+		<BlockNotices
+			key="block-notices"
+			notices={ notices.noticeList }
+			onRemove={ notices.removeNotice }
+		/>;
 
 		const controls = (
 			<BlockControls>
@@ -206,6 +224,8 @@ class ImageEdit extends Component {
 						className={ className }
 						icon="format-image"
 						label={ __( 'Image' ) }
+						notices={ noticesUI }
+						onError={ notices.createErrorNotice }
 						onSelectImage={ this.onSelectImage }
 					/>
 				</Fragment>
@@ -300,6 +320,7 @@ class ImageEdit extends Component {
 		return (
 			<Fragment>
 				{ controls }
+				{ noticesUI }
 				<figure className={ classes }>
 					<ImageSize src={ url } dirtynessTrigger={ align }>
 						{ ( sizes ) => {
@@ -387,14 +408,17 @@ class ImageEdit extends Component {
 	}
 }
 
-export default withSelect( ( select, props ) => {
-	const { getMedia } = select( 'core' );
-	const { getEditorSettings } = select( 'core/editor' );
-	const { id } = props.attributes;
-	const { maxWidth } = getEditorSettings();
+export default compose( [
+	withSelect( ( select, props ) => {
+		const { getMedia } = select( 'core' );
+		const { getEditorSettings } = select( 'core/editor' );
+		const { id } = props.attributes;
+		const { maxWidth } = getEditorSettings();
 
-	return {
-		image: id ? getMedia( id ) : null,
-		maxWidth,
-	};
-} )( ImageEdit );
+		return {
+			image: id ? getMedia( id ) : null,
+			maxWidth,
+		};
+	} ),
+	withNotices,
+] )( ImageEdit );

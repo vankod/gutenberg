@@ -17,11 +17,13 @@ import {
 	SelectControl,
 	ToggleControl,
 	Toolbar,
+	withNotices,
 } from '@wordpress/components';
 import { editorMediaUpload } from '@wordpress/blocks';
 import {
 	BlockControls,
 	BlockAlignmentToolbar,
+	BlockNotices,
 	MediaUpload,
 	ImagePlaceholder,
 	InspectorControls,
@@ -44,7 +46,7 @@ export function defaultColumnsNumber( attributes ) {
 	return Math.min( 3, attributes.images.length );
 }
 
-export default class GalleryEdit extends Component {
+class GalleryEdit extends Component {
 	constructor() {
 		super( ...arguments );
 
@@ -135,16 +137,17 @@ export default class GalleryEdit extends Component {
 
 	addFiles( files ) {
 		const currentImages = this.props.attributes.images || [];
-		const { setAttributes } = this.props;
-		editorMediaUpload(
-			files,
-			( images ) => {
+		const { notices, setAttributes } = this.props;
+		editorMediaUpload( {
+			allowedType: 'image',
+			filesList: files,
+			onFileChange: ( images ) => {
 				setAttributes( {
 					images: currentImages.concat( images ),
 				} );
 			},
-			'image',
-		);
+			onError: notices.createErrorNotice,
+		} );
 	}
 
 	componentWillReceiveProps( nextProps ) {
@@ -158,7 +161,7 @@ export default class GalleryEdit extends Component {
 	}
 
 	render() {
-		const { attributes, isSelected, className } = this.props;
+		const { attributes, isSelected, className, notices } = this.props;
 		const { images, columns = defaultColumnsNumber( attributes ), align, imageCrop, linkTo } = attributes;
 
 		const dropZone = (
@@ -195,6 +198,13 @@ export default class GalleryEdit extends Component {
 			</BlockControls>
 		);
 
+		const noticesUI = notices.noticeList.length > 0 &&
+			<BlockNotices
+				key="block-notices"
+				notices={ notices.noticeList }
+				onRemove={ notices.removeNotice }
+			/>;
+
 		if ( images.length === 0 ) {
 			return (
 				<Fragment>
@@ -205,6 +215,8 @@ export default class GalleryEdit extends Component {
 						label={ __( 'Gallery' ) }
 						onSelectImage={ this.onSelectImages }
 						multiple
+						notices={ noticesUI }
+						onError={ notices.createErrorNotice }
 					/>
 				</Fragment>
 			);
@@ -236,6 +248,7 @@ export default class GalleryEdit extends Component {
 						/>
 					</PanelBody>
 				</InspectorControls>
+				{ noticesUI }
 				<ul className={ `${ className } align${ align } columns-${ columns } ${ imageCrop ? 'is-cropped' : '' }` }>
 					{ dropZone }
 					{ images.map( ( img, index ) => (
@@ -271,3 +284,5 @@ export default class GalleryEdit extends Component {
 		);
 	}
 }
+
+export default withNotices( GalleryEdit );

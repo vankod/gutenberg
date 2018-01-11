@@ -1,0 +1,13 @@
+.block-notices {
+	margin: 0 0 12px 0;
+	width: 100%;
+
+	.notice {
+		margin-left: 0px;
+		margin-right: 0px;
+
+		p {
+			font-size: $default-font-size;
+		}
+	}
+}
