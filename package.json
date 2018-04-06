@@ -89,6 +89,7 @@
 		"puppeteer": "1.2.0",
 		"raw-loader": "0.5.1",
 		"react-test-renderer": "16.3.0",
+		"rimraf": "2.6.2",
 		"sass-loader": "6.0.7",
 		"sprintf-js": "1.1.1",
 		"style-loader": "0.20.3",
@@ -121,6 +122,7 @@
 	"scripts": {
 		"prebuild": "check-node-version --package",
 		"build": "cross-env NODE_ENV=production webpack",
+		"build-parser": "pegjs -o test/parser/bin/parser.js blocks/api/post.pegjs",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"lint-php": "docker-compose run --rm composer run-script lint",
@@ -142,6 +144,7 @@
 		"test-unit:coverage-ci": "npm run test-unit -- --coverage --maxWorkers 1 && codecov",
 		"test-unit:watch": "npm run test-unit -- --watch",
 		"test-e2e": "wp-scripts test-unit-js --config test/e2e/jest.config.json",
-		"test-e2e:watch": "npm run test-e2e -- --watch"
+		"test-e2e:watch": "npm run test-e2e -- --watch",
+		"test-parser": "npx jest test/parser/test.js"
 	}
 }
