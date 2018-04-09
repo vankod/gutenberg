@@ -8,4 +8,28 @@
 	td[data-mce-selected="1"], th[data-mce-selected="1"] {
 		background-color: $light-gray-500;
 	}
+
+	// Responsive stacking
+	tr,
+	td,
+	th {
+		display: block;
+		width: 100%;
+	}
+
+	/*@include break-small () {
+		tr {
+			display: table-row;
+		}
+	}
+
+	@include break-small () {
+		td,
+		th {
+			display: table-cell;
+		}
+	}*/
 }
+
+
+// todo, add icons or colors, possibly, to indicate what's a row and what's a cell, perhaps when the table is selected show this, when unselected don't
