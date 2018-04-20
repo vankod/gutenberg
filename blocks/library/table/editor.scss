@@ -3,6 +3,11 @@
 	th {
 		padding: 0.5em;
 		border: 1px solid currentColor;
+		margin-bottom: -1px;
+
+		/*&:last-child {
+			margin-bottom: inherit;
+		}*/
 	}
 
 	td[data-mce-selected="1"], th[data-mce-selected="1"] {
@@ -10,28 +15,28 @@
 	}
 
 	// Responsive stacking
-	tr,
-	td,
-	th {
-		display: block;
-		width: 100%;
-	}
-
-	@include break-small () {
+	@include break-small-only() {
 		tr,
 		td,
 		th {
-			width: auto;
-		}
+			display: block;
 
-		tr {
-			display: table-row;
-			width: inherit;
-		}
-
-		td,
-		th {
-			display: table-cell;
+			// These, unfortunately, have to be !important in order to override the resizer tool
+			width: 100% !important;
+			height: auto !important;
 		}
 	}
+}
+
+// Style the resize handles
+.ephox-snooker-resizer-rows {
+	cursor: row-resize;
+}
+
+.ephox-snooker-resizer-cols {
+	cursor: col-resize;
+}
+
+.ephox-snooker-resizer-bar-dragging {
+	background: $blue-medium-500;
 }
