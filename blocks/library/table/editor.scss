@@ -18,13 +18,17 @@
 	}
 
 	@include break-small () {
+		tr,
+		td,
+		th {
+			width: auto;
+		}
+
 		tr {
 			display: table-row;
 			width: inherit;
 		}
-	}
 
-	@include break-small () {
 		td,
 		th {
 			display: table-cell;
