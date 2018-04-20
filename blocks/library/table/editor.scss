@@ -16,6 +16,9 @@
 
 	// Responsive stacking
 	@include break-small-only() {
+		overflow-x: inherit;
+
+		// Collapse rows
 		tr,
 		td,
 		th {
@@ -25,6 +28,11 @@
 			width: 100% !important;
 			height: auto !important;
 		}
+	}
+
+	// Fixed layout toggle
+	&.has-fixed-layout table {
+		table-layout: fixed;
 	}
 }
 
