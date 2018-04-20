@@ -28,6 +28,10 @@
 			width: 100% !important;
 			height: auto !important;
 		}
+
+		tr + tr {
+			margin-top: 1em;
+		}
 	}
 
 	// Fixed layout toggle
