@@ -17,9 +17,10 @@
 		width: 100%;
 	}
 
-	/*@include break-small () {
+	@include break-small () {
 		tr {
 			display: table-row;
+			width: inherit;
 		}
 	}
 
@@ -28,8 +29,5 @@
 		th {
 			display: table-cell;
 		}
-	}*/
+	}
 }
-
-
-// todo, add icons or colors, possibly, to indicate what's a row and what's a cell, perhaps when the table is selected show this, when unselected don't
