@@ -32,11 +32,6 @@
 		margin: #{ $item-spacing / 2 } 0 $item-spacing;
 	}
 
-	// Needs specificity to override the margin-bottom set by .button
-	.wp-core-ui & .shared-block-edit-panel__button {
-		margin: 0 5px 0 0;
-	}
-
 	@include break-large() {
 		flex-wrap: nowrap;
 

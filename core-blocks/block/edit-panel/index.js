@@ -22,9 +22,29 @@ class SharedBlockEditPanel extends Component {
 
 		this.titleField = createRef();
 		this.editButton = createRef();
+		this.editForm = createRef();
 		this.handleFormSubmit = this.handleFormSubmit.bind( this );
 		this.handleTitleChange = this.handleTitleChange.bind( this );
 		this.handleTitleKeyDown = this.handleTitleKeyDown.bind( this );
+		this.handleClickOutside = this.handleClickOutside.bind( this );
+	}
+
+	componentDidMount() {
+		document.addEventListener( 'click', this.handleClickOutside, true );
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener( 'click', this.handleClickOutside, true );
+	}
+
+	handleClickOutside( event ) {
+		if ( ! this.editForm.current ) {
+			return;
+		}
+
+		if ( ! this.editForm.current.contains( event.target ) ) {
+			this.props.onCancel();
+		}
 	}
 
 	componentDidUpdate( prevProps ) {
@@ -55,7 +75,7 @@ class SharedBlockEditPanel extends Component {
 	}
 
 	render() {
-		const { isEditing, title, isSaving, onEdit, onCancel, instanceId } = this.props;
+		const { isEditing, title, isSaving, onEdit, instanceId } = this.props;
 
 		return (
 			<Fragment>
@@ -75,7 +95,11 @@ class SharedBlockEditPanel extends Component {
 					</div>
 				) }
 				{ ( isEditing || isSaving ) && (
-					<form className="shared-block-edit-panel" onSubmit={ this.handleFormSubmit }>
+					<form
+						className="shared-block-edit-panel"
+						ref={ this.editForm }
+						onSubmit={ this.handleFormSubmit }
+					>
 						<label
 							htmlFor={ `shared-block-edit-panel__title-${ instanceId }` }
 							className="shared-block-edit-panel__label"
@@ -94,21 +118,12 @@ class SharedBlockEditPanel extends Component {
 						/>
 						<Button
 							type="submit"
-							isPrimary
 							isLarge
 							isBusy={ isSaving }
 							disabled={ ! title || isSaving }
 							className="shared-block-edit-panel__button"
 						>
 							{ __( 'Save' ) }
-						</Button>
-						<Button
-							isLarge
-							disabled={ isSaving }
-							className="shared-block-edit-panel__button"
-							onClick={ onCancel }
-						>
-							{ __( 'Cancel' ) }
 						</Button>
 					</form>
 				) }
