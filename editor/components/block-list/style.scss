@@ -158,7 +158,7 @@
 	 * Hovered Block style
 	 */
 
-	&.is-selected > .editor-block-mover:before,
+	/*&.is-selected > .editor-block-mover:before,
 	&.is-hovered > .editor-block-mover:before,
 	&.is-selected > .editor-block-settings-menu:before,
 	&.is-hovered > .editor-block-settings-menu:before {
@@ -178,7 +178,11 @@
 	&.is-hovered > .editor-block-settings-menu:before {
 		border-left: 1px solid $light-gray-500;
 		left: 0;
-	}
+	}*/
+
+	/**
+	 * Appender
+	 */
 
 	&.is-typing .editor-block-list__empty-block-inserter,
 	&.is-typing .editor-block-list__side-inserter {
@@ -192,7 +196,7 @@
 	}
 
 	/**
-	 * Selected Block style
+	 * Block outline layout
 	 */
 
 	.editor-block-list__block-edit {
@@ -202,19 +206,35 @@
 			z-index: z-index( '.editor-block-list__block-edit:before' );
 			content: '';
 			position: absolute;
+			outline: 1px solid transparent;
+
+			// show wider padding for top level blocks
+			top: -$block-padding * 2;
+			right: -$block-padding * 2;
+			bottom: -$block-padding * 2;
+			left: -$block-padding * 2;
+		}
+
+		.editor-block-list__block-edit:before {
+			// show smaller padding for child blocks
 			top: -$block-padding;
 			right: -$block-padding;
 			bottom: -$block-padding;
 			left: -$block-padding;
-			outline: 1px solid transparent;
 		}
-
 	}
 
-	// focused block-style
+
+	// Hover style
+	&.is-hovered > .editor-block-list__block-edit:before {
+		outline: 1px solid $blue-medium-300;
+	}
+
+	// Selected style
 	&.is-selected > .editor-block-list__block-edit:before {
 		outline: 1px solid $light-gray-500;
 	}
+
 
 	/**
 	 * Selection Style

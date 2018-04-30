@@ -60,7 +60,8 @@ export class BlockBreadcrumb extends Component {
 
 		return (
 			<NavigableToolbar className={ classnames( 'editor-block-list__breadcrumb', {
-				'is-visible': ! isHidden || isFocused,
+				//'is-visible': ! isHidden || isFocused,
+				'is-visible': false,
 			} ) }>
 				<Toolbar>
 					{ rootUID && (
