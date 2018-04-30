@@ -7,7 +7,7 @@ import classnames from 'classnames';
  * WordPress dependencies
  */
 import { compose, Component } from '@wordpress/element';
-import { IconButton, Tooltip, Toolbar } from '@wordpress/components';
+import { Button, Tooltip, Toolbar } from '@wordpress/components';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
@@ -56,28 +56,25 @@ export class BlockBreadcrumb extends Component {
 	render( ) {
 		const { uid, rootUID, selectRootBlock, isHidden } = this.props;
 		const { isFocused } = this.state;
-		const selectParentLabel = __( 'Select parent block' );
 
 		return (
-			<NavigableToolbar className={ classnames( 'editor-block-list__breadcrumb', {
-				//'is-visible': ! isHidden || isFocused,
-				'is-visible': false,
+			<div className={ classnames( 'editor-block-list__breadcrumb', {
+				'is-visible': ! isHidden || isFocused,
 			} ) }>
 				<Toolbar>
 					{ rootUID && (
-						<Tooltip text={ selectParentLabel }>
-							<IconButton
-								onClick={ selectRootBlock }
-								onFocus={ this.onFocus }
-								onBlur={ this.onBlur }
-								label={ selectParentLabel }
-								icon="arrow-left-alt"
-							/>
-						</Tooltip>
+						<Button
+							onClick={ selectRootBlock }
+							onFocus={ this.onFocus }
+							onBlur={ this.onBlur }
+						>
+							<BlockTitle uid={ rootUID } />
+						</Button>
 					) }
+					{ rootUID && ( <span> &rarr; </span> ) }
 					<BlockTitle uid={ uid } />
 				</Toolbar>
-			</NavigableToolbar>
+			</div>
 		);
 	}
 }

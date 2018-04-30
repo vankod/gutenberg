@@ -154,32 +154,7 @@
 		background-image: linear-gradient( to bottom, transparent, $white );
 	}
 
-	/**
-	 * Hovered Block style
-	 */
-
-	/*&.is-selected > .editor-block-mover:before,
-	&.is-hovered > .editor-block-mover:before,
-	&.is-selected > .editor-block-settings-menu:before,
-	&.is-hovered > .editor-block-settings-menu:before {
-		content: '';
-		position: absolute;
-		height: 36px;
-		top: 10px;
-	}
-
-	&.is-selected > .editor-block-mover:before,
-	&.is-hovered > .editor-block-mover:before {
-		border-right: 1px solid $light-gray-500;
-		right: 0;
-	}
-
-	&.is-selected > .editor-block-settings-menu:before,
-	&.is-hovered > .editor-block-settings-menu:before {
-		border-left: 1px solid $light-gray-500;
-		left: 0;
-	}*/
-
+	
 	/**
 	 * Appender
 	 */
@@ -209,17 +184,17 @@
 			outline: 1px solid transparent;
 
 			// show wider padding for top level blocks
-			top: -$block-padding * 2;
-			right: -$block-padding * 2;
-			bottom: -$block-padding * 2;
-			left: -$block-padding * 2;
+			top: -$block-padding; // -$parent-block-padding;
+			bottom: -$block-padding; // -$parent-block-padding;
+			right: -$parent-block-padding;
+			left: -$parent-block-padding;
 		}
 
+		// show smaller padding for child blocks
 		.editor-block-list__block-edit:before {
-			// show smaller padding for child blocks
-			top: -$block-padding;
+			//top: -$block-padding;
+			//bottom: -$block-padding;
 			right: -$block-padding;
-			bottom: -$block-padding;
 			left: -$block-padding;
 		}
 	}
@@ -621,8 +596,7 @@
  * Block Toolbar
  */
 
-.editor-block-contextual-toolbar,
-.editor-block-list__breadcrumb {
+.editor-block-contextual-toolbar {
 	position: sticky;
 	z-index: z-index( '.editor-block-contextual-toolbar' );
 	white-space: nowrap;
@@ -670,8 +644,7 @@
 
 }
 
-.editor-block-contextual-toolbar .editor-block-toolbar,
-.editor-block-list__breadcrumb .components-toolbar {
+.editor-block-contextual-toolbar .editor-block-toolbar {
 	border: 1px solid $light-gray-500;
 	width: 100%;
 	background: $white;
@@ -695,27 +668,44 @@
 	}
 }
 
-.editor-block-list__breadcrumb .components-toolbar {
-	padding: 0px 12px;
-	line-height: $block-toolbar-height - 1px;
-	font-family: $default-font;
-	font-size: $default-font-size;
-	color: $dark-gray-500;
-	cursor: default;
+/**
+ * Hover label
+ */
 
-	.components-button {
-		margin-left: -12px;
-		margin-right: 12px;
-		border-right: 1px solid $light-gray-500;
-		color: $dark-gray-500;
-		padding-top: 6px;
+ .editor-block-list__breadcrumb {
+	position: absolute;
+	right: -$block-padding + 2px;
+	//top: -$block-padding - 2px;
+	top: $parent-block-padding - ( $block-padding * 2 ) - 2px;
+	line-height: 1;
+
+	.components-toolbar {
+		border: none;
+		background: transparent;
+		padding: 0px;
+		line-height: 1;
+		font-family: $default-font;
+		font-size: 11px;
+		color: $blue-medium-500;
+		cursor: default;
+
+		> span {
+			margin: 0 4px;
+		}
+
+		> .components-button {
+			padding: 0;
+			line-height: 1;
+			font-size: 11px;
+			color: $blue-medium-500;
+			text-decoration: underline;
+		}
 	}
-}
 
-.editor-block-list__breadcrumb {
-	opacity: 0;
 
-	&.is-visible {
-		@include fade_in;
+	// nested
+	.editor-block-list__block-edit & {
+		right: $parent-block-padding - ( $block-padding * 2 ) + 2px;
+		//top: $parent-block-padding - ( $block-padding * 2 ) - 2px;
 	}
 }
