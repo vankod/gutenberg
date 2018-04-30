@@ -38,11 +38,8 @@ class SharedBlockEditPanel extends Component {
 	}
 
 	handleClickOutside( event ) {
-		if ( ! this.editForm.current ) {
-			return;
-		}
-
-		if ( ! this.editForm.current.contains( event.target ) ) {
+		// The form is rendered only when isEditing.
+		if ( this.props.isEditing && ! this.editForm.current.contains( event.target ) ) {
 			this.props.onCancel();
 		}
 	}
