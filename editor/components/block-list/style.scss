@@ -98,6 +98,10 @@
 	}
 }
 
+/**
+ * General layout
+ */
+
 .editor-block-list__layout .editor-block-list__block {
 	position: relative;
 	padding-left: $block-padding;
@@ -126,12 +130,90 @@
 
 	margin-bottom: $block-spacing;
 
-
 	/**
-	 * Warnings
+	 * Block outline layout
 	 */
+	.editor-block-list__block-edit {
+		position: relative;
 
-	&.has-warning .editor-block-list__block-edit {
+		&:before {
+			z-index: z-index( '.editor-block-list__block-edit:before' );
+			content: '';
+			position: absolute;
+			outline: 1px solid transparent;
+
+			// show wider padding for top level blocks
+			right: -$parent-block-padding;
+			left: -$parent-block-padding;
+			//top: -$block-padding; // @todo: decide on vertical padding
+			//bottom: -$block-padding;
+
+			// also show wider padding above and below, to enable easier wide image selection
+			top: -$parent-block-padding;
+			bottom: -$parent-block-padding;
+		}
+
+		// show smaller padding for child blocks
+		.editor-block-list__block-edit:before {
+			right: -$block-padding;
+			left: -$block-padding;
+			top: -$block-padding;
+			bottom: -$block-padding;
+		}
+	}
+
+
+	// Hover style
+	&.is-hovered > .editor-block-list__block-edit:before {
+		outline: 1px solid $blue-medium-300;
+	}
+
+	// Selected style
+	&.is-selected > .editor-block-list__block-edit:before {
+		outline: 1px solid $light-gray-500;
+		top: -$block-padding; // @todo: decide on vertical padding
+		bottom: -$block-padding;
+	}
+}
+
+
+/**
+ * Cross-block selection
+ */
+
+.editor-block-list__layout .editor-block-list__block {
+	::-moz-selection {
+		background-color: $blue-medium-highlight;
+	}
+
+	::selection {
+		background-color: $blue-medium-highlight;
+	}
+
+	// selection style for multiple blocks
+	&.is-multi-selected *::selection {
+		background-color: transparent;
+	}
+
+	&.is-multi-selected .editor-block-list__block-edit:before {
+		background: $blue-medium-highlight;
+
+		// Collapse extra vertical padding on selection
+		// @todo: decide on vertical padding
+		top: -$block-padding;
+		bottom: -$block-padding;
+	}
+}
+
+
+/**
+ * Block styles and alignments
+ */
+
+.editor-block-list__layout .editor-block-list__block {
+
+	// Warnings
+	 &.has-warning .editor-block-list__block-edit {
 		position: relative;
 		min-height: 250px;
 		max-height: 500px;
@@ -154,11 +236,7 @@
 		background-image: linear-gradient( to bottom, transparent, $white );
 	}
 
-	
-	/**
-	 * Appender
-	 */
-
+	// Appender	
 	&.is-typing .editor-block-list__empty-block-inserter,
 	&.is-typing .editor-block-list__side-inserter {
 		opacity: 0;
@@ -170,88 +248,12 @@
 		transition: opacity 0.2s;
 	}
 
-	/**
-	 * Block outline layout
-	 */
-
-	.editor-block-list__block-edit {
-		position: relative;
-
-		&:before {
-			z-index: z-index( '.editor-block-list__block-edit:before' );
-			content: '';
-			position: absolute;
-			outline: 1px solid transparent;
-
-			// show wider padding for top level blocks
-			top: -$block-padding; // -$parent-block-padding;
-			bottom: -$block-padding; // -$parent-block-padding;
-			right: -$parent-block-padding;
-			left: -$parent-block-padding;
-		}
-
-		// show smaller padding for child blocks
-		.editor-block-list__block-edit:before {
-			//top: -$block-padding;
-			//bottom: -$block-padding;
-			right: -$block-padding;
-			left: -$block-padding;
-		}
-	}
-
-
-	// Hover style
-	&.is-hovered > .editor-block-list__block-edit:before {
-		outline: 1px solid $blue-medium-300;
-	}
-
-	// Selected style
-	&.is-selected > .editor-block-list__block-edit:before {
-		outline: 1px solid $light-gray-500;
-	}
-
-
-	/**
-	 * Selection Style
-	 */
-
-	::-moz-selection {
-		background-color: $blue-medium-highlight;
-	}
-
-	::selection {
-		background-color: $blue-medium-highlight;
-	}
-
-	// selection style for multiple blocks
-	&.is-multi-selected *::selection {
-		background-color: transparent;
-	}
-
-	&.is-multi-selected .editor-block-list__block-edit:before {
-		background: $blue-medium-highlight;
-	}
-
-	/**
-	 * Shared blocks
-	 */
-
-	&.is-shared > .editor-block-mover:before {
-		border-right: none;
-	}
-
-	&.is-shared > .editor-block-settings-menu:before {
-		border-left: none;
-	}
-
+	// Shared blocks
 	&.is-shared > .editor-block-list__block-edit:before {
 		outline: 1px dashed $light-gray-500;
 	}
 
-	/**
-	 * Alignments
-	 */
-
+	// Alignments
 	&[data-align="left"],
 	&[data-align="right"] {
 		// Without z-index, won't be clickable as "above" adjacent content
@@ -695,18 +697,20 @@
  .editor-block-list__breadcrumb {
 	position: absolute;
 	line-height: 1;
-	background: rgba( $white, .6 );
-	padding: 1px 8px 2px 4px;
+	background: rgba( $white, .7 );
+	padding: 0px 4px 2px 4px;
 	border-radius: 0 0 0 4px;
-	// @todo: needs z index
+	z-index: z-index( '.editor-block-list__breadcrumb' );
 
 	// Position in the top right of the border
 	right: -$block-parent-side-ui-clearance;
-	top: 1px;
+	//top: 1px;	// @todo: decide on vertical padding
+	top: -$block-parent-side-ui-clearance + 1px;	
 
 	// Nested
 	.editor-block-list__block-edit & {
 		right: $parent-block-padding - $block-padding - $block-parent-side-ui-clearance;
+		top: 1px;	
 	}
 
 	.components-toolbar {
