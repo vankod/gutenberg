@@ -145,12 +145,12 @@
 			// show wider padding for top level blocks
 			right: -$parent-block-padding;
 			left: -$parent-block-padding;
-			//top: -$block-padding; // @todo: decide on vertical padding
-			//bottom: -$block-padding;
+			top: -$block-padding;
+			bottom: -$block-padding;
 
-			// also show wider padding above and below, to enable easier wide image selection
-			top: -$parent-block-padding;
-			bottom: -$parent-block-padding;
+			// @todo, consider also showing wider padding above and below, to enable easier wide image selection
+			//top: -$parent-block-padding;
+			//bottom: -$parent-block-padding;
 		}
 
 		// show smaller padding for child blocks
@@ -704,8 +704,8 @@
 
 	// Position in the top right of the border
 	right: -$block-parent-side-ui-clearance;
-	//top: 1px;	// @todo: decide on vertical padding
-	top: -$block-parent-side-ui-clearance + 1px;	
+	top: 1px;	// @todo: decide on vertical padding
+	//top: -$block-parent-side-ui-clearance + 1px;	
 
 	// Nested
 	.editor-block-list__block-edit & {
