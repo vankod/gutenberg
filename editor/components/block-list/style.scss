@@ -1,11 +1,16 @@
-.components-draggable__clone {
+.editor-block-list__layout .components-draggable__clone {
 	& > .editor-block-list__block > .editor-block-list__block-draggable {
 		background: $white;
 		box-shadow: $shadow-popover;
 
 		@include break-small {
-			left: 0;
-			right: 0;
+			left: -$block-parent-side-ui-clearance - 1px;
+			right: -$block-parent-side-ui-clearance - 1px;
+			
+			.editor-block-list__layout & {
+				left: -1px;
+				right: -1px;
+			}
 		}
 	}
 
@@ -165,12 +170,12 @@
 
 	// Hover style
 	&.is-hovered > .editor-block-list__block-edit:before {
-		outline: 1px solid $blue-medium-300;
+		outline: 1px solid $light-gray-500;
 	}
 
 	// Selected style
 	&.is-selected > .editor-block-list__block-edit:before {
-		outline: 1px solid $light-gray-500;
+		outline: 1px solid $light-gray-700;
 		top: -$block-padding; // @todo: decide on vertical padding
 		bottom: -$block-padding;
 	}
@@ -667,7 +672,7 @@
 }
 
 .editor-block-contextual-toolbar .editor-block-toolbar {
-	border: 1px solid $light-gray-500;
+	border: 1px solid $light-gray-700;
 	width: 100%;
 	background: $white;
 
@@ -695,6 +700,8 @@
  */
 
  .editor-block-list__breadcrumb {
+	display: none; // try hiding for now, @todo
+
 	position: absolute;
 	line-height: 1;
 	background: rgba( $white, .7 );
@@ -720,7 +727,7 @@
 		line-height: 1;
 		font-family: $default-font;
 		font-size: 11px;
-		color: $blue-medium-500;
+		color: $light-gray-500;
 		cursor: default;
 
 		> span {
@@ -731,7 +738,7 @@
 			padding: 0;
 			line-height: 1;
 			font-size: 11px;
-			color: $blue-medium-500;
+			color: $light-gray-500;
 			text-decoration: underline;
 		}
 	}
