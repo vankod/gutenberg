@@ -63,13 +63,7 @@ export class BlockBreadcrumb extends Component {
 			} ) }>
 				<Toolbar>
 					{ rootUID && (
-						<Button
-							onClick={ selectRootBlock }
-							onFocus={ this.onFocus }
-							onBlur={ this.onBlur }
-						>
-							<BlockTitle uid={ rootUID } />
-						</Button>
+						<BlockTitle uid={ rootUID } />
 					) }
 					{ rootUID && ( <span> &rarr; </span> ) }
 					<BlockTitle uid={ uid } />

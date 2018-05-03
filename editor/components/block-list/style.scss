@@ -24,7 +24,7 @@
 	}
 }
 
-.editor-block-list__block-draggable {
+.editor-block-list__layout .editor-block-list__block-draggable {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -51,8 +51,15 @@
 	}
 
 	@include break-small {
-		left: -$block-side-ui-padding;
-		right: -$block-side-ui-padding;
+		// use a wider available space for hovering/selecting/dragging on top level blocks
+		left: -$parent-block-padding - $block-padding;
+		right: -$parent-block-padding - $block-padding;
+
+		// use smaller space for hovering/selecting/dragging on child blocks
+		.editor-block-list__layout & {
+			left: -$block-side-ui-width;
+			right: -$block-side-ui-width;
+		}
 
 		// Full width blocks don't have the place to expand on the side
 		.editor-block-list__block[data-align="full"] & {
@@ -146,16 +153,13 @@
 			content: '';
 			position: absolute;
 			outline: 1px solid transparent;
+			transition: outline .1s linear;
 
 			// show wider padding for top level blocks
 			right: -$parent-block-padding;
 			left: -$parent-block-padding;
 			top: -$block-padding;
 			bottom: -$block-padding;
-
-			// @todo, consider also showing wider padding above and below, to enable easier wide image selection
-			//top: -$parent-block-padding;
-			//bottom: -$parent-block-padding;
 		}
 
 		// show smaller padding for child blocks
@@ -170,13 +174,13 @@
 
 	// Hover style
 	&.is-hovered > .editor-block-list__block-edit:before {
-		outline: 1px solid $light-gray-500;
+		outline: 1px solid $blue-medium-300;
 	}
 
 	// Selected style
 	&.is-selected > .editor-block-list__block-edit:before {
 		outline: 1px solid $light-gray-700;
-		top: -$block-padding; // @todo: decide on vertical padding
+		top: -$block-padding;
 		bottom: -$block-padding;
 	}
 }
@@ -204,7 +208,6 @@
 		background: $blue-medium-highlight;
 
 		// Collapse extra vertical padding on selection
-		// @todo: decide on vertical padding
 		top: -$block-padding;
 		bottom: -$block-padding;
 	}
@@ -396,8 +399,8 @@
 	> .editor-block-settings-menu,
 	> .editor-block-mover {
 		position: absolute;
-		top: 0; // stretch to bottom to utilize full vertical space to increase hoverable area
-		bottom: 0;
+		top: 0;
+		min-height: 50%; // stretch to fill half of the available space to increase hoverable area
 		width: $block-side-ui-width + $block-side-ui-clearance;
 
 		/* Necessary for drag indicator */
@@ -700,46 +703,35 @@
  */
 
  .editor-block-list__breadcrumb {
-	display: none; // try hiding for now, @todo
-
 	position: absolute;
 	line-height: 1;
 	background: rgba( $white, .7 );
 	padding: 0px 4px 2px 4px;
-	border-radius: 0 0 0 4px;
 	z-index: z-index( '.editor-block-list__breadcrumb' );
 
 	// Position in the top right of the border
-	right: -$block-parent-side-ui-clearance;
-	top: 1px;	// @todo: decide on vertical padding
-	//top: -$block-parent-side-ui-clearance + 1px;	
+	right: -$block-parent-side-ui-clearance - 1px;
+	top: -$block-padding - 4px;
+	background-color: $blue-medium-300;
 
 	// Nested
 	.editor-block-list__block-edit & {
-		right: $parent-block-padding - $block-padding - $block-parent-side-ui-clearance;
-		top: 1px;	
+		right: $parent-block-padding - $block-padding - $block-parent-side-ui-clearance - 1px;
 	}
 
 	.components-toolbar {
+		padding: 0;
 		border: none;
 		background: transparent;
 		padding: 0px;
 		line-height: 1;
 		font-family: $default-font;
 		font-size: 11px;
-		color: $light-gray-500;
+		color: $white;
 		cursor: default;
 
 		> span {
 			margin: 0 4px;
-		}
-
-		> .components-button {
-			padding: 0;
-			line-height: 1;
-			font-size: 11px;
-			color: $light-gray-500;
-			text-decoration: underline;
 		}
 	}
 }
