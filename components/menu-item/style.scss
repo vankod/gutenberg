@@ -5,6 +5,7 @@
 	text-align: left;
 	padding-left: 25px;
 	color: $dark-gray-500;
+	@include menu-style__neutral;
 
 	.dashicon,
 	.components-menu-items__item-icon {
@@ -20,11 +21,11 @@
 		padding-left: 0;
 	}
 
-	&:hover {
-		@include menu-style__neutral;
+	&:not( :disabled ):not( [aria-disabled="true"] ):hover {
+		@include menu-style__hover;
 	}
 
-	&:focus {
+	&:not( :disabled ):not( [aria-disabled="true"] ):focus {
 		@include menu-style__focus;
 	}
 }

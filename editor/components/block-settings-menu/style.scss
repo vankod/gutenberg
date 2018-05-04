@@ -72,9 +72,11 @@
 		cursor: pointer;
 		@include menu-style__neutral;
 
-		&:hover,
-		&:focus,
-		&:not(:disabled):hover {
+		&:not( :disabled ):not( [aria-disabled="true"] ):hover {
+			@include menu-style__hover;
+		}
+
+		&:not( :disabled ):not( [aria-disabled="true"] ):focus {
 			@include menu-style__focus;
 		}
 
