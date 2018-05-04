@@ -406,6 +406,7 @@ export class BlockListBlock extends Component {
 			isMultiSelecting,
 			hoverArea,
 			isLargeViewport,
+			hasSelectedInnerBlock,
 		} = this.props;
 		const isHovered = this.state.isHovered && ! isMultiSelecting;
 		const { name: blockName, isValid } = block;
@@ -418,14 +419,13 @@ export class BlockListBlock extends Component {
 		// If the block is selected and we're typing the block should not appear.
 		// Empty paragraph blocks should always show up as unselected.
 		const isEmptyDefaultBlock = isUnmodifiedDefaultBlock( block );
-		const isSelectedNotTyping = isSelected && ! isTypingWithinBlock;
 		const showSideInserter = ( isSelected || isHovered ) && isEmptyDefaultBlock;
-		const shouldAppearSelected = ! showSideInserter && isSelectedNotTyping;
+		const shouldAppearSelected = ! showSideInserter && ( isSelected || hasSelectedInnerBlock ) && ! isTypingWithinBlock;
 		// We render block movers and block settings to keep them tabbale even if hidden
 		const shouldRenderMovers = ( isSelected || hoverArea === 'left' ) && ! showSideInserter && ! isMultiSelecting && ! isMultiSelected;
 		const shouldRenderBlockSettings = ( isSelected || hoverArea === 'right' ) && ! showSideInserter && ! isMultiSelecting && ! isMultiSelected;
 		const shouldShowBreadcrumb = isHovered;
-		const shouldShowContextualToolbar = shouldAppearSelected && isValid && ( ! hasFixedToolbar || ! isLargeViewport );
+		const shouldShowContextualToolbar = ! showSideInserter && isSelected && ! isTypingWithinBlock && isValid && ( ! hasFixedToolbar || ! isLargeViewport );
 		const shouldShowMobileToolbar = shouldAppearSelected;
 		const { error, dragging } = this.state;
 
@@ -617,8 +617,10 @@ const applyWithSelect = withSelect( ( select, { uid, rootUID } ) => {
 		getSelectedBlocksInitialCaretPosition,
 		getBlockSelectionEnd,
 		getBlockRootUID,
+		hasSelectedInnerBlock,
 	} = select( 'core/editor' );
 	const isSelected = isBlockSelected( uid );
+	const isParentOfSelectedBlock = hasSelectedInnerBlock( uid );
 	return {
 		previousBlockUid: getPreviousBlockUid( uid ),
 		nextBlockUid: getNextBlockUid( uid ),
@@ -627,17 +629,18 @@ const applyWithSelect = withSelect( ( select, { uid, rootUID } ) => {
 		isFirstMultiSelected: isFirstMultiSelectedBlock( uid ),
 		isMultiSelecting: isMultiSelecting(),
 		isLastInSelection: getBlockSelectionEnd() === uid,
+		hasSelectedInnerBlock: isParentOfSelectedBlock,
 		// We only care about this prop when the block is selected
 		// Thus to avoid unnecessary rerenders we avoid updating the prop if the block is not selected.
-		isTypingWithinBlock: isSelected && isTyping(),
+		isTypingWithinBlock: ( isSelected || isParentOfSelectedBlock ) && isTyping(),
 		order: getBlockIndex( uid, rootUID ),
 		meta: getEditedPostAttribute( 'meta' ),
 		mode: getBlockMode( uid ),
 		isSelectionEnabled: isSelectionEnabled(),
 		initialPosition: getSelectedBlocksInitialCaretPosition(),
-		isSelected,
 		rootUIDOfRoot: getBlockRootUID( rootUID ),
 		orderOfRoot: getBlockIndex( rootUID, getBlockRootUID( rootUID ) ),
+		isSelected,
 	};
 } );
 
