@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { isHorizontalEdge, placeCaretAtHorizontalEdge, isTextField } from '../dom';
+import { isHorizontalEdge, placeCaretAtHorizontalEdge, isTextField, DOMRectImplementation } from '../dom';
 
 describe( 'DOM', () => {
 	let parent;
@@ -13,6 +13,37 @@ describe( 'DOM', () => {
 
 	afterEach( () => {
 		parent.remove();
+	} );
+
+	describe( 'DOMRectImplementation', () => {
+		it( 'should have specified x, y, width, and height properties', () => {
+			const domRect = new DOMRectImplementation( 12, 34, 56, 78 );
+			expect( domRect.x ).toBe( 12 );
+			expect( domRect.y ).toBe( 34 );
+			expect( domRect.width ).toBe( 56 );
+			expect( domRect.height ).toBe( 78 );
+		} );
+
+		it( 'should have correct `left` and `right` when `width` is positive', () => {
+			const domRect = new DOMRectImplementation( 100, 0, 200, 0 );
+			expect( domRect.left ).toBe( /* x */ 100 );
+			expect( domRect.right ).toBe( /* x + width */ 300 );
+		} );
+		it( 'should have correct `left` and `right` when `width` is negative', () => {
+			const domRect = new DOMRectImplementation( 100, 0, -200, 0 );
+			expect( domRect.left ).toBe( /* x + width */ -100 );
+			expect( domRect.right ).toBe( /* x */ 100 );
+		} );
+		it( 'should have correct `top` and `bottom` when `height` is positive', () => {
+			const domRect = new DOMRectImplementation( 0, 100, 0, 200 );
+			expect( domRect.top ).toBe( /* y */ 100 );
+			expect( domRect.bottom ).toBe( /* y + height */ 300 );
+		} );
+		it( 'should have correct `top` and `bottom` when `height` is negative', () => {
+			const domRect = new DOMRectImplementation( 0, 100, 0, -200 );
+			expect( domRect.top ).toBe( /* y + height */ -100 );
+			expect( domRect.bottom ).toBe( /* y */ 100 );
+		} );
 	} );
 
 	describe( 'isHorizontalEdge', () => {

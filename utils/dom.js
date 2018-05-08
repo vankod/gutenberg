@@ -7,8 +7,35 @@ import tinymce from 'tinymce';
 /**
  * Browser dependencies
  */
-const { getComputedStyle, DOMRect } = window;
+const { getComputedStyle } = window;
 const { TEXT_NODE, ELEMENT_NODE } = window.Node;
+
+/**
+ * A DOMRect implementation for browsers that don't provide one.
+ *
+ * This DOMRect implementation attempts to follow the DOMRect interface
+ * as described in the Geometry Interfaces draft recommendation:
+ * https://drafts.fxtf.org/geometry/#DOMRect
+ *
+ * This is an implementation detail but is exported for unit test.
+ *
+ * @private
+ */
+export const DOMRectImplementation = class DOMRect {
+	constructor( x, y, width, height ) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.left = x + Math.min( 0, width );
+		this.right = x + Math.max( 0, width );
+		this.top = y + Math.min( 0, height );
+		this.bottom = y + Math.max( 0, height );
+	}
+};
+
+// DOMRect isn't provided in IE, so we need to provide an implementation.
+const DOMRect = window.DOMRect || DOMRectImplementation;
 
 /**
  * Check whether the caret is horizontally at the edge of the container.
