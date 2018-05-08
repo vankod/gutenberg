@@ -4,9 +4,10 @@
 import { __ } from '@wordpress/i18n';
 import { IconButton } from '@wordpress/components';
 import {
+	NewUserTip,
 	PostPreviewButton,
-	PostSavedState,
 	PostPublishPanelToggle,
+	PostSavedState,
 } from '@wordpress/editor';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/element';
@@ -56,7 +57,9 @@ function Header( {
 						isToggled={ isEditorSidebarOpened }
 						label={ __( 'Settings' ) }
 						aria-expanded={ isEditorSidebarOpened }
-					/>
+					>
+						<NewUserTip id="settings" />
+					</IconButton>
 					<MoreMenu key="more-menu" />
 				</div>
 			) }

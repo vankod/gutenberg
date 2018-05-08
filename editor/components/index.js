@@ -15,11 +15,12 @@ export { default as ImagePlaceholder } from './image-placeholder';
 export { default as InnerBlocks } from './inner-blocks';
 export { default as InspectorAdvancedControls } from './inspector-advanced-controls';
 export { default as InspectorControls } from './inspector-controls';
+export { default as MediaUpload } from './media-upload';
+export { default as NewUserTip } from './new-user-tip';
 export { default as PanelColor } from './panel-color';
 export { default as PlainText } from './plain-text';
 export { default as RichText } from './rich-text';
 export { default as RichTextProvider } from './rich-text/provider';
-export { default as MediaUpload } from './media-upload';
 export { default as UrlInput } from './url-input';
 export { default as UrlInputButton } from './url-input/button';
 

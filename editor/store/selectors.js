@@ -1613,3 +1613,14 @@ export function getSupportedBlocks( state, uid, globallyEnabledBlockTypes ) {
 	}
 	return intersection( globallyEnabledBlockTypes, supportedNestedBlocks );
 }
+
+/**
+ * TODO
+ *
+ * @param {Object} state TODO
+ *
+ * @return {?number} TODO
+ */
+export function getCurrentNewUserGuideStep( state ) {
+	return state.preferences.currentNewUserGuideStep;
+}

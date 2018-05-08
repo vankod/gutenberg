@@ -836,6 +836,18 @@ export function preferences( state = PREFERENCES_DEFAULTS, action ) {
 				...state,
 				insertUsage: omitBy( state.insertUsage, ( { insert } ) => insert.ref === action.id ),
 			};
+
+		case 'ADVANCE_NEW_USER_GUIDE':
+			return {
+				...state,
+				currentNewUserGuideStep: state.currentNewUserGuideStep + 1,
+			};
+
+		case 'DISMISS_NEW_USER_GUIDE':
+			return {
+				...state,
+				currentNewUserGuideStep: null,
+			};
 	}
 
 	return state;

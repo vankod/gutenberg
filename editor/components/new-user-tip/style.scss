@@ -1,0 +1,14 @@
+.editor-new-user-tip {
+	$close-button-size: 36px;
+
+	.components-popover__content {
+		padding: 5px ( $close-button-size + 5px ) 5px 10px;
+		width: 350px;
+	}
+
+	.editor-new-user-tip__close {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+}

@@ -14,6 +14,7 @@ import { withSelect } from '@wordpress/data';
 /**
  * Internal Dependencies
  */
+import NewUserTip from '../new-user-tip';
 import PostPublishButton from '../post-publish-button';
 
 function PostPublishPanelToggle( {
@@ -52,6 +53,7 @@ function PostPublishPanelToggle( {
 			isBusy={ isSaving && isPublished }
 		>
 			{ isBeingScheduled ? __( 'Schedule…' ) : __( 'Publish…' ) }
+			{ isButtonEnabled && <NewUserTip id="publish" /> }
 		</Button>
 	);
 }

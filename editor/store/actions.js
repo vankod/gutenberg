@@ -682,3 +682,25 @@ export function updateBlockListSettings( id, settings ) {
 		settings,
 	};
 }
+
+/**
+ * TODO
+ *
+ * @return {Object} TODO
+ */
+export function advanceNewUserGuide() {
+	return {
+		type: 'ADVANCE_NEW_USER_GUIDE',
+	};
+}
+
+/**
+ * TODO
+ *
+ * @return {Object} TODO
+ */
+export function dismissNewUserGuide() {
+	return {
+		type: 'DISMISS_NEW_USER_GUIDE',
+	};
+}

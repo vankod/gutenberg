@@ -10,13 +10,14 @@ import { withViewportMatch } from '@wordpress/viewport';
  */
 import { __ } from '@wordpress/i18n';
 import {
-	Inserter,
 	BlockToolbar,
-	TableOfContents,
 	EditorHistoryRedo,
 	EditorHistoryUndo,
+	Inserter,
 	MultiBlocksSwitcher,
 	NavigableToolbar,
+	NewUserTip,
+	TableOfContents,
 } from '@wordpress/editor';
 
 /**
@@ -30,7 +31,10 @@ function HeaderToolbar( { hasFixedToolbar, isLargeViewport } ) {
 			className="edit-post-header-toolbar"
 			aria-label={ __( 'Editor Toolbar' ) }
 		>
-			<Inserter position="bottom right" />
+			<span>
+				<Inserter position="bottom right" />
+				<NewUserTip id="inserter" />
+			</span>
 			<EditorHistoryUndo />
 			<EditorHistoryRedo />
 			<TableOfContents />
