@@ -22,7 +22,7 @@ const TIPS = {
 	},
 	preview: {
 		step: 3,
-		text: __( 'Click ‘Preview’ to load a preview of this page, so you can make sure you’re happy with your blocks. ' ),
+		text: __( 'Click ‘Preview’ to load a preview of this page, so you can make sure you’re happy with your blocks.' ),
 	},
 	publish: {
 		step: 4,
