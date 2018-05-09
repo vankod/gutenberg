@@ -288,7 +288,12 @@ export class Autocomplete extends Component {
 		const selection = window.getSelection();
 		if ( selection.isCollapsed ) {
 			if ( 'production' !== process.env.NODE_ENV ) {
-				if ( ! container.contains( selection.anchorNode ) ) {
+				// TODO: Consider adding this as a local `contains` polyfill.
+				// Use `compareDocumentPosition` because IE11 `Node#contains` doesn't work for text nodes.
+				const documentPositionMask = container.compareDocumentPosition( selection.anchorNode );
+				// eslint-disable-next-line no-bitwise
+				const containsAnchorNode = !! ( documentPositionMask & window.Node.DOCUMENT_POSITION_CONTAINED_BY );
+				if ( ! containsAnchorNode ) {
 					throw new Error( 'Invalid assumption: expected selection to be within the autocomplete container' );
 				}
 			}
