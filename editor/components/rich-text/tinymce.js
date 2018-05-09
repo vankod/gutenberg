@@ -94,6 +94,16 @@ export default class TinyMCE extends Component {
 				this.props.onSetup( editor );
 			},
 		} );
+
+		// TODO: Put this behind some kind of feature or functionality test.
+		this.editorNode.addEventListener( 'textinput', ( textInputEvent ) => {
+			textInputEvent.stopImmediatePropagation();
+
+			const inputEvent = document.createEvent( 'Event' );
+			inputEvent.initEvent( 'input', true, false );
+			inputEvent.data = textInputEvent.data;
+			textInputEvent.target.dispatchEvent( inputEvent );
+		} );
 	}
 
 	render() {
