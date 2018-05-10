@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { get, map, find, some } from 'lodash';
+import { get, map, find, filter } from 'lodash';
 
 /**
  * Returns all the available terms for the given taxonomy.
@@ -85,7 +85,7 @@ export function getUserQueryResults( state, queryID ) {
  * @return {boolean} Whether the entities are loaded
  */
 export function getEntitiesByKind( state, kind ) {
-	return some( state.entities.config, { kind } );
+	return filter( state.entities.config, { kind } );
 }
 
 /**

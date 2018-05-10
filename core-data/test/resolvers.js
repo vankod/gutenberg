@@ -55,12 +55,19 @@ describe( 'getEntityRecord', () => {
 	} );
 
 	it( 'yields with requested post type', async () => {
-		const fulfillment = getEntityRecord( {}, 'root', 'postType', 'post' );
+		const state = {
+			entities: {
+				config: [
+					{ name: 'postType', kind: 'root', baseUrl: '/wp/v2/types' },
+				],
+			},
+		};
+		const fulfillment = getEntityRecord( state, 'root', 'postType', 'post' );
 		const received = ( await fulfillment.next() ).value;
 		expect( received ).toEqual( receiveEntityRecords( 'root', 'postType', POST_TYPE ) );
 	} );
 
-	it.only( 'loads the kind entities and yields with requested post type', async () => {
+	it( 'loads the kind entities and yields with requested post type', async () => {
 		const fulfillment = getEntityRecord( { entities: {} }, 'postType', 'post', 10 );
 		const receivedEntities = ( await fulfillment.next() ).value;
 		expect( receivedEntities ).toEqual( addEntities( [ {
