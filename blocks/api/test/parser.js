@@ -586,7 +586,7 @@ describe( 'block parser', () => {
 				save: ( { attributes } ) => attributes.content,
 			} );
 
-			const content = '$foo = "My \"escaped\" text.';
+			const content = '$foo = "My \"escaped\" text.";';
 			const block = createBlock( 'core/code', { content } );
 			const serialized = serialize( block );
 			const parsed = parse( serialized );
