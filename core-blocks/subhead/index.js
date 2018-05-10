@@ -19,13 +19,15 @@ import './style.scss';
 export const name = 'core/subhead';
 
 export const settings = {
-	title: __( 'Subheading' ),
+	title: __( 'Subtitle' ),
 
-	description: __( 'What\'s a subhead? Smaller than a headline, bigger than basic text.' ),
+	description: __( 'What\'s a subtitle? Smaller than a headline, bigger than basic text.' ),
 
 	icon: 'text',
 
 	category: 'common',
+
+	keywords: [ __( 'subheading' ) ],
 
 	useOnce: true,
 
@@ -88,7 +90,7 @@ export const settings = {
 					} }
 					style={ { textAlign: align } }
 					className={ className }
-					placeholder={ placeholder || __( 'Write subheading…' ) }
+					placeholder={ placeholder || __( 'Write subtitle…' ) }
 				/>
 			</Fragment>
 		);

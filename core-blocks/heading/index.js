@@ -22,7 +22,7 @@ export const settings = {
 
 	category: 'common',
 
-	keywords: [ __( 'title' ), __( 'subtitle' ) ],
+	keywords: [ __( 'title' ) ],
 
 	supports: {
 		className: false,
