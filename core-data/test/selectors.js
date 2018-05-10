@@ -61,9 +61,11 @@ describe( 'getEntityRecord', () => {
 	it( 'should return undefined for unknown record\'s key', () => {
 		const state = deepFreeze( {
 			entities: {
-				root: {
-					postType: {
-						byKey: {},
+				data: {
+					root: {
+						postType: {
+							byKey: {},
+						},
 					},
 				},
 			},
@@ -74,10 +76,12 @@ describe( 'getEntityRecord', () => {
 	it( 'should return a record by key', () => {
 		const state = deepFreeze( {
 			entities: {
-				root: {
-					postType: {
-						byKey: {
-							post: { slug: 'post' },
+				data: {
+					root: {
+						postType: {
+							byKey: {
+								post: { slug: 'post' },
+							},
 						},
 					},
 				},
