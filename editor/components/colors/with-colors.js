@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { get } from 'lodash';
+import { get, memoize } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -13,6 +13,35 @@ import { withSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import { getColorValue, getColorClass, setColorValue } from './utils';
+
+const memoizedGetColor = memoize(
+	( colors ) =>
+		memoize(
+			( colorName, customColorValue, colorContext ) => {
+				return {
+					name: colorName,
+					class: getColorClass( colorContext, colorName ),
+					value: getColorValue( colors, colorName, customColorValue ),
+				};
+			},
+			( colorName, customColorValue, colorContext ) =>
+				`${ colorName }-${ customColorValue }-${ colorContext }`
+		)
+);
+
+const memoizedSetColor = memoize(
+	( setAttributes ) =>
+		memoize(
+			( colors ) =>
+				memoize(
+					( colorNameAttribute, customColorAttribute ) => {
+						return setColorValue( colors, colorNameAttribute, customColorAttribute, setAttributes );
+					},
+					( colorNameAttribute, customColorAttribute ) =>
+						`${ colorNameAttribute }-${ customColorAttribute }`
+				)
+		)
+);
 
 /**
  * Higher-order component, which handles color logic for class generation
@@ -28,17 +57,7 @@ export default ( mapGetSetColorToProps ) => createHigherOrderComponent(
 		( select, props ) => {
 			const settings = select( 'core/editor' ).getEditorSettings();
 			const colors = get( settings, [ 'colors' ], [] );
-			const getColor = ( colorName, customColorValue, colorContext ) => {
-				return {
-					name: colorName,
-					class: getColorClass( colorContext, colorName ),
-					value: getColorValue( colors, colorName, customColorValue ),
-				};
-			};
-			const setColor = ( colorNameAttribute, customColorAttribute, setAttributes ) => {
-				return setColorValue( colors, colorNameAttribute, customColorAttribute, setAttributes );
-			};
-			return mapGetSetColorToProps( getColor, setColor, props );
+			return mapGetSetColorToProps( memoizedGetColor( colors ), memoizedSetColor( props.setAttributes )( colors ), props );
 		} ),
 	'withColors'
 );
