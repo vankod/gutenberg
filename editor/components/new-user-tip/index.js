@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { Component, createRef, compose } from '@wordpress/element';
-import { Popover, Button, IconButton } from '@wordpress/components';
+import { createSlotFill, Button, IconButton } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { withSelect, withDispatch } from '@wordpress/data';
 
@@ -30,11 +30,22 @@ const TIPS = {
 	},
 };
 
+const { Slot, Fill } = createSlotFill( 'NewUserTip' );
+
 class NewUserTip extends Component {
 	constructor() {
 		super( ...arguments );
 
+		this.anchorRef = createRef();
 		this.advanceButtonRef = createRef();
+
+		this.state = {
+			position: {},
+		};
+	}
+
+	componentDidMount() {
+		this.setPosition();
 	}
 
 	componentDidUpdate( prevProps ) {
@@ -46,8 +57,24 @@ class NewUserTip extends Component {
 		}
 	}
 
+	setPosition() {
+		const anchor = this.anchorRef.current;
+		if ( ! anchor || ! anchor.parentNode ) {
+			return;
+		}
+
+		const rect = anchor.parentNode.getBoundingClientRect();
+		this.setState( {
+			position: {
+				top: rect.top + ( rect.height / 2 ),
+				left: rect.right,
+			},
+		} );
+	}
+
 	render() {
 		const { id, currentStep, onAdvance, onDismiss } = this.props;
+		const { position } = this.state;
 
 		const { step, text } = TIPS[ id ];
 
@@ -56,37 +83,42 @@ class NewUserTip extends Component {
 		}
 
 		return (
-			<Popover
-				position="bottom right"
-				className="editor-new-user-tip"
-				role="dialog"
-				aria-modal="true"
-				aria-label={ __( 'New User Guide' ) }
-				onClick={ ( event ) => event.stopPropagation() }
-			>
-				<p>{ text }</p>
-				<p>
-					<Button
-						ref={ this.advanceButtonRef }
-						isLarge
-						isPrimary
-						onClick={ onAdvance }
+			<span ref={ this.anchorRef }>
+				<Fill>
+					<div
+						className="editor-new-user-tip"
+						style={ position }
+						role="dialog"
+						aria-modal="true"
+						aria-label={ __( 'New User Guide' ) }
 					>
-						{ __( 'Next tip' ) }
-					</Button>
-				</p>
-				<IconButton
-					icon="no-alt"
-					label={ __( 'Dismiss guide' ) }
-					className="editor-new-user-tip__close"
-					onClick={ onDismiss }
-				/>
-			</Popover>
+						<div className="editor-new-user-tip__content">
+							<p>{ text }</p>
+							<p>
+								<Button
+									ref={ this.advanceButtonRef }
+									isLarge
+									isPrimary
+									onClick={ onAdvance }
+								>
+									{ __( 'Next tip' ) }
+								</Button>
+							</p>
+							<IconButton
+								icon="no-alt"
+								label={ __( 'Dismiss guide' ) }
+								className="editor-new-user-tip__close"
+								onClick={ onDismiss }
+							/>
+						</div>
+					</div>
+				</Fill>
+			</span>
 		);
 	}
 }
 
-export default compose(
+const EnhancedNewUserTip = compose(
 	withSelect( ( select ) => {
 		const { getCurrentNewUserGuideStep } = select( 'core/editor' );
 		return {
@@ -105,3 +137,7 @@ export default compose(
 		};
 	} ),
 )( NewUserTip );
+
+EnhancedNewUserTip.Slot = Slot;
+
+export default EnhancedNewUserTip;

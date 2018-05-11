@@ -11,11 +11,12 @@ import { Popover, ScrollLock, navigateRegions } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import {
 	AutosaveMonitor,
-	UnsavedChangesWarning,
-	EditorNotices,
-	PostPublishPanel,
 	DocumentTitle,
+	EditorNotices,
+	NewUserTip,
+	PostPublishPanel,
 	PreserveScrollInReorder,
+	UnsavedChangesWarning,
 } from '@wordpress/editor';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/element';
@@ -93,6 +94,7 @@ function Layout( {
 				isMobileViewport && sidebarIsOpened && <ScrollLock />
 			}
 			<Popover.Slot />
+			<NewUserTip.Slot />
 			<PluginArea />
 		</div>
 	);
